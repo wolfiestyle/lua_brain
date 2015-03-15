@@ -1,8 +1,8 @@
-## lua_brain
+# lua_brain
 
 Chat bot engine based on Markov chains.
 
-# Dependencies
+## Dependencies
 
 - lsqlite3
 - utf8
