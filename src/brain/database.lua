@@ -1,8 +1,8 @@
 -- SQLite database interface for storing a Markov chain.
 -- Author: darkstalker <https://github.com/darkstalker>
 -- License: MIT/X11
-local assert, error, math_random, setmetatable, table_concat, tonumber, tostring =
-      assert, error, math.random, setmetatable, table.concat, tonumber, tostring
+local assert, error, math_random, setmetatable, table_concat, tonumber, tostring, type =
+      assert, error, math.random, setmetatable, table.concat, tonumber, tostring, type
 local sqlite = require "lsqlite3"
 
 local database = {}
@@ -90,6 +90,8 @@ function database:init(order)
 end
 
 function database:_gen_sql(order, with_schema)
+    assert(type(order) == "number" and order > 0 and order % 1 == 0, "markov order must be a positive integer")
+
     local names, s_cond, s_cond2, args, case = {}, {}, {}, {}, {}
     for i = 1, order do
         local name = ("token%d_id"):format(i)
