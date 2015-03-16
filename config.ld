@@ -6,3 +6,4 @@ file = "src"
 format = "markdown"
 plain = true
 readme = "README.md"
+examples = { "examples" }
