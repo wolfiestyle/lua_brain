@@ -9,9 +9,9 @@ local database = {}
 database.__index = database
 
 local sql_db_template = [[
-CREATE TABLE markov_config (
+CREATE TABLE config (
     key TEXT NOT NULL PRIMARY KEY,
-    val TEXT
+    val TEXT NOT NULL
 );
 CREATE TABLE token (
     id INTEGER PRIMARY KEY,
@@ -71,8 +71,8 @@ function database:close()
 end
 
 function database:init(order)
-    if self:table_exists "markov_config" then
-        order = assert(tonumber(self:get_config("order")), "invalid config")
+    if self:table_exists "config" then
+        order = assert(tonumber(self:get_config "markov_order"), "invalid config")
         self:_gen_sql(order)
     else
         order = order or 2
@@ -84,7 +84,7 @@ function database:init(order)
         ctx:result_number(math_random() ^ (1 / weight))
     end)
 
-    self.db:exec "PRAGMA foreign_keys = ON"
+    self:exec "PRAGMA foreign_keys = ON"
 
     return order
 end
@@ -131,21 +131,14 @@ function database:create_schema(order)
         error(self.db:error_message())
     end
 
-    self:set_config("order", tostring(order))
+    self:set_config("markov_order", tostring(order))
 end
 
-function database:begin_transaction()
-    if self.db:exec "BEGIN IMMEDIATE" ~= 0 then
+function database:exec(...)
+    if self.db:exec(...) ~= 0 then
         error(self.db:error_message())
     end
 end
-
-function database:commit()
-    if self.db:exec "COMMIT" ~= 0 then
-        error(self.db:error_message())
-    end
-end
-
 
 local function st_exec_0(db, st)
     if st:step() ~= sqlite.DONE then
@@ -225,11 +218,15 @@ function database:get_stats()
 end
 
 function database:get_config(key)
-    return self:exec_1u("SELECT val FROM markov_config WHERE key = ?", key)
+    return self:exec_1u("SELECT val FROM config WHERE key = ?", key)
 end
 
 function database:set_config(key, val)
-    return self:exec_0("INSERT OR REPLACE INTO markov_config (key, val) VALUES (?, ?)", key, val)
+    return self:exec_0("INSERT OR REPLACE INTO config (key, val) VALUES (?, ?)", key, val)
+end
+
+function database:unset_config(key)
+    return self:exec_0("DELETE FROM config WHERE key = ?", key)
 end
 
 -- token --

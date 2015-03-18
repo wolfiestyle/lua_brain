@@ -100,7 +100,7 @@ end
 -- Call this before learning a bunch of text to speed up the process.
 function brain:begin_batch()
     if self.transaction == 0 then
-        self.db:begin_transaction()
+        self.db:exec "BEGIN IMMEDIATE"
     end
     self.transaction = self.transaction + 1
 end
@@ -109,7 +109,7 @@ end
 function brain:end_batch()
     self.transaction = self.transaction - 1
     if self.transaction == 0 then
-        self.db:commit()
+        self.db:exec "COMMIT"
     end
 end
 
