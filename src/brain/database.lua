@@ -9,6 +9,9 @@ local database = {}
 database.__index = database
 
 local sql_db_template = [[
+CREATE TABLE brain_db_version (
+    required_v1_a383d08d
+);
 CREATE TABLE config (
     key TEXT NOT NULL PRIMARY KEY,
     val TEXT NOT NULL
@@ -71,7 +74,8 @@ function database:close()
 end
 
 function database:init(order)
-    if self:table_exists "config" then
+    if self:table_exists "brain_db_version" then
+        self:exec "SELECT required_v1_a383d08d FROM brain_db_version"
         order = assert(tonumber(self:get_config "markov_order"), "invalid config")
         self:_gen_sql(order)
     else
