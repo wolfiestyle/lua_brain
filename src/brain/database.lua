@@ -163,6 +163,7 @@ local function st_exec_1(db, st, mode)
     elseif res ~= sqlite.DONE then
         error(db:error_message())
     end
+    return nil
 end
 
 function database:exec_0(sql, ...)
