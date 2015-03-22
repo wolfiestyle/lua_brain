@@ -1,8 +1,9 @@
 package = "brain"
-version = "scm-1"
+version = "0.1.0-1"
 
 source = {
     url = "git://github.com/darkstalker/lua_brain.git",
+    tag = "0.1.0",
 }
 
 description = {
