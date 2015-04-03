@@ -20,9 +20,9 @@ function tokenizer.parse(text)
             local prefix, word, suffix = utf8.match(fragment, "^(%p*)(.-)(%p*)$")
             local token
             -- hashtag / mention
-            local p, c = prefix:match "(.-)([#@])$"
+            local p, c, u = prefix:match "(.-)([#@])(_*)$"
             if p then
-                token = { type = c, pos = 0, text = c .. word }
+                token = { type = c, pos = 0, text = c .. u .. word }
                 prefix = p
             else
                 -- lowercase or capitalized word
