@@ -5,7 +5,7 @@ Brain is a conversation simulator based on Markov chains. It can learn to speak 
 ## Dependencies
 
 - lsqlite3
-- utf8
+- luautf8
 
 ## Installation
 

@@ -18,7 +18,7 @@ description = {
 dependencies = {
     "lua >= 5.1",
     "lsqlite3 >= 0.9.3",
-    "utf8 >= 1.1",
+    "luautf8 >= 0.1.0",
 }
 
 build = {

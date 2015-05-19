@@ -3,7 +3,7 @@
 -- License: MIT/X11
 local table_concat =
       table.concat
-local utf8 = require "utf8"
+local utf8 = require "lua-utf8"
 
 local tokenizer = {}
 
